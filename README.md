@@ -4,9 +4,10 @@ Nama: Zulkifli
 
 Repository: [GitHub repository URL](https://github.com/zulkiflidev/challenge-10-zulkiflidev)
 
-Deployment: [Challenge 10 - Live website URL (Vercel) ](https://challenge-10-zulkiflidev.vercel.app/)
+Deployment: [Challenge 10 - Live website URL ( Vercel ) ](https://challenge-10-zulkiflidev.vercel.app/)
 
 Notes: "Belum ada..."
+
 
 ==============================================
 
