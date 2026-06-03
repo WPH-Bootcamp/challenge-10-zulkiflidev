@@ -3,6 +3,8 @@ import { Geist_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 
+import Providers from "./providers";
+
 const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-nunito",
@@ -20,9 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{  children: React.ReactNode;  }>) {
   return (
     <html
       lang="en"
@@ -37,7 +37,9 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem
         >
-          {children}
+          <Providers>
+              {children}
+          </Providers>
         </ThemeProvider>
       </body>
     </html>
