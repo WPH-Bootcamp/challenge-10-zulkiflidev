@@ -1,18 +1,53 @@
 "use client"
 
-import {useState} from 'react'
-import Image from "next/image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, EyeOff } from "lucide-react";
 
+import Image from "next/image";
+
+import {useState} from 'react'
+import { useLogin } from "@/lib/query/useAuth";
+import { useRouter } from "next/navigation";
+
 function LoginPage() {
 
-  const [showPass, setShowPass] = useState(false)
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPass, setShowPass] = useState(false);
+
+  const { mutate, isPending, isError, error } = useLogin();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutate(
+      { email, password },
+
+      {
+        onSuccess: (data) => {
+
+          console.log("sukses login");
+          router.push("/"); 
+        },
+        onError: (err) => {
+          console.error(`gagal login: ${err.message}`);
+        }
+      }
+    );
+  };
+
+  if (isPending) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error: {error.message}</p>;
+  }
 
   return (
     <div>
@@ -58,12 +93,17 @@ function LoginPage() {
 
                 {/* Sign In atau Login */}
                 <TabsContent value="signin" className="mt-4">
-                    <form className="flex flex-col space-y-4">
+                    <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
                       <div className="space-y-2">
                         {/* 
                           <Label htmlFor="email">Email</Label>
                         */}
-                        <Input id="email" type="email" placeholder="Email" />
+                        <Input id="email" type="email" 
+                              placeholder="Email" 
+                              value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                              
+                              />
                       </div>
 
                       <div className="space-y-2">
@@ -74,6 +114,8 @@ function LoginPage() {
                           <Input
                             id="password"
                             type={showPass ? "text" : "password"}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
                             className="pr-10"
                           />
@@ -99,9 +141,12 @@ function LoginPage() {
                         </a>
                       </div>
 
-                      <Button type="submit" className="w-full">Login</Button>
+                      <Button type="submit" className="w-full" 
+                              disabled={isPending}>
+                                {isPending ? "Loading..." : "Login"}
+                      </Button>
                     </form>
-                    </TabsContent>
+                  </TabsContent>
 
                 {/* Sign Up */}
                 <TabsContent value="signup" className="mt-4">
