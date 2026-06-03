@@ -1,3 +1,16 @@
+## Form Submissions:
+
+Nama: Zulkifli
+
+Repository: [GitHub repository URL](https://github.com/zulkiflidev/challenge-10-zulkiflidev)
+
+Deployment: [Challenge 10 - Live website URL (Vercel) ](https://challenge-10-zulkiflidev.vercel.app/)
+
+Notes: "Belum ada..."
+
+==============================================
+
+
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/MAEN0sta)
 # Assignment 10 - Restaurant App
 
