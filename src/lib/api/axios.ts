@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "@/store/authStore";
 
 
 const apiClient = axios.create({
@@ -11,6 +12,15 @@ const apiClient = axios.create({
   timeout: 10000, // optional, 10 detik
 
 
+});
+
+// Request Interceptor: Menyisipkan token secara otomatis jika user sudah login
+apiClient.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default apiClient;

@@ -9,9 +9,10 @@ import { Eye, EyeOff } from "lucide-react";
 
 import Image from "next/image";
 
-import {useState} from 'react'
+import {useState} from 'react';
 import { useLogin } from "@/lib/query/useAuth";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 function LoginPage() {
 
@@ -20,8 +21,10 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+  const setToken = useAuthStore((state) => state.setToken);
 
-  const { mutate, isPending, isError, error } = useLogin();
+  const { mutate, isPending } = useLogin();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,24 +33,22 @@ function LoginPage() {
 
       {
         onSuccess: (data) => {
-
+          // Menyesuaikan struktur object dari axios / API untuk mengambil token
+          const token = (data as any)?.data?.token || (data as any)?.token;
+          if (token) {
+            setToken(token);
+          }
           console.log("sukses login");
           router.push("/"); 
         },
-        onError: (err) => {
-          console.error(`gagal login: ${err.message}`);
+        onError: (err: any) => {
+          const message = err.response?.data?.message || err.message || "Login failed. Please try again.";
+          setLoginError(message);
+          console.error(`gagal login: ${message}`);
         }
       }
     );
   };
-
-  if (isPending) {
-    return <p>Loading...</p>;
-  }
-
-  if (isError) {
-    return <p>Error: {error.message}</p>;
-  }
 
   return (
     <div>
@@ -94,6 +95,9 @@ function LoginPage() {
                 {/* Sign In atau Login */}
                 <TabsContent value="signin" className="mt-4">
                     <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+                      {loginError && (
+                        <p className="text-sm text-red-500 text-center">{loginError}</p>
+                      )}
                       <div className="space-y-2">
                         {/* 
                           <Label htmlFor="email">Email</Label>
