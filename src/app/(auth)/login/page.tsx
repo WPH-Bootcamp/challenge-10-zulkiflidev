@@ -10,7 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 
 import {useState} from 'react';
-import { useLogin } from "@/lib/query/useAuth";
+import { useLogin, useRegister } from "@/lib/query/useAuth";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 
@@ -18,22 +18,31 @@ function LoginPage() {
 
   const router = useRouter();
 
+  // Login States
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
+
+  // Register States
+  const [signupName, setSignupName] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPhone, setSignupPhone] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
+  const [signupError, setSignupError] = useState<string | null>(null);
+
   const setToken = useAuthStore((state) => state.setToken);
 
-  const { mutate, isPending } = useLogin();
+  const { mutate: loginMutate, isPending: isLoginPending } = useLogin();
+  const { mutate: registerMutate, isPending: isRegisterPending } = useRegister();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(
+    loginMutate(
       { email, password },
-
       {
         onSuccess: (data) => {
-          // Menyesuaikan struktur object dari axios / API untuk mengambil token
           const token = (data as any)?.data?.token || (data as any)?.token;
           if (token) {
             setToken(token);
@@ -45,6 +54,40 @@ function LoginPage() {
           const message = err.response?.data?.message || err.message || "Login failed. Please try again.";
           setLoginError(message);
           console.error(`gagal login: ${message}`);
+        }
+      }
+    );
+  };
+
+  const handleSignup = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSignupError(null);
+
+    if (signupPassword !== signupConfirmPassword) {
+      setSignupError("Passwords do not match");
+      return;
+    }
+
+    registerMutate(
+      { 
+        name: signupName, 
+        email: signupEmail, 
+        phone: signupPhone, 
+        password: signupPassword 
+      },
+      {
+        onSuccess: (data) => {
+          const token = (data as any)?.data?.token || (data as any)?.token;
+          if (token) {
+            setToken(token);
+          }
+          console.log("sukses register");
+          router.push("/");
+        },
+        onError: (err: any) => {
+          const message = err.response?.data?.message || err.message || "Registration failed. Please try again.";
+          setSignupError(message);
+          console.error(`gagal register: ${message}`);
         }
       }
     );
@@ -94,7 +137,7 @@ function LoginPage() {
 
                 {/* Sign In atau Login */}
                 <TabsContent value="signin" className="mt-4">
-                    <form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+                    <form className="flex flex-col space-y-4" onSubmit={handleLogin}>
                       {loginError && (
                         <p className="text-sm text-red-500 text-center">{loginError}</p>
                       )}
@@ -146,19 +189,28 @@ function LoginPage() {
                       </div>
 
                       <Button type="submit" className="w-full" 
-                              disabled={isPending}>
-                                {isPending ? "Loading..." : "Login"}
+                              disabled={isLoginPending}>
+                                {isLoginPending ? "Loading..." : "Login"}
                       </Button>
                     </form>
                   </TabsContent>
 
                 {/* Sign Up */}
                 <TabsContent value="signup" className="mt-4">
-                    <form className="flex flex-col space-y-4">
+                    <form className="flex flex-col space-y-4" onSubmit={handleSignup}>
+                      {signupError && (
+                        <p className="text-sm text-red-500 text-center">{signupError}</p>
+                      )}
                       <div className=" gap-3">
                         <div className="space-y-2">
                           {/* <Label htmlFor="name">Name</Label> */}
-                          <Input id="signup-name" placeholder="Name" />
+                          <Input 
+                            id="signup-name" 
+                            placeholder="Name" 
+                            value={signupName}
+                            onChange={(e) => setSignupName(e.target.value)}
+                            required
+                          />
                         </div>
 
                         {/*
@@ -172,21 +224,37 @@ function LoginPage() {
 
                       <div className="space-y-2">
                         {/* <Label htmlFor="signup-email">Email</Label> */}
-                        <Input id="signup-email" type="email" placeholder="Email" />
+                        <Input 
+                          id="signup-email" 
+                          type="email" 
+                          placeholder="Email" 
+                          value={signupEmail}
+                          onChange={(e) => setSignupEmail(e.target.value)}
+                          required
+                        />
                       </div>
 
                       <div className="space-y-2">
                         {/* <Label htmlFor="name">Phone Number</Label> */}
-                        <Input id="signup-phone" placeholder="Phone Number" />
+                        <Input 
+                          id="signup-phone" 
+                          placeholder="Phone Number" 
+                          value={signupPhone}
+                          onChange={(e) => setSignupPhone(e.target.value)}
+                          required
+                        />
                       </div>
 
                       <div className="relative">
                         <div className="space-y-2">
                           {/* <Label htmlFor="signup-pass">Password</Label> */}
                           <Input id="signup-pass" 
-                            
                               type={showPass ? "text" : "password"}                           
-                              placeholder="Password" />
+                              placeholder="Password"
+                              value={signupPassword}
+                              onChange={(e) => setSignupPassword(e.target.value)}
+                              required
+                          />
 
                         </div>
                         <button
@@ -205,7 +273,11 @@ function LoginPage() {
                           */}
                           <Input id="signup-confirm-pass"                             
                             type={showPass ? "text" : "password"}                             
-                            placeholder="Confirm Password" />                            
+                            placeholder="Confirm Password" 
+                            value={signupConfirmPassword}
+                            onChange={(e) => setSignupConfirmPassword(e.target.value)}
+                            required
+                          />                            
                         </div>
 
                         <button
@@ -217,7 +289,9 @@ function LoginPage() {
                           </button>
                       </div>      
 
-                      <Button type="submit" className="w-full">Register</Button>
+                      <Button type="submit" className="w-full" disabled={isRegisterPending}>
+                        {isRegisterPending ? "Loading..." : "Register"}
+                      </Button>
                     </form>
                     </TabsContent>
 
