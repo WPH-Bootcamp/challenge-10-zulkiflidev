@@ -1,0 +1,7 @@
+npm install axios
+npm install zustand
+npm install @tanstack/react-query
+npm install react-hook-form
+npm install zod
+npm install @hookform/resolvers
+npm install lucide-react

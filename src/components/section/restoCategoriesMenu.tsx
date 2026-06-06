@@ -18,7 +18,7 @@ function RestoCategoriesMenu() {
     <div className="bg-white text-neutral-950 py-8 w-full">
       
       <div className="flex flex-row justify-start md:justify-between overflow-x-auto gap-4
-                      px-4 md:px-16 pb-8 pt-2 scrollbar-hide">
+                      px-4 md:px-24 lg:px-32 pb-8 pt-2 scrollbar-hide">
 
         {RESTO_CATEGORIES_MENU.map((menu, index) => (
 

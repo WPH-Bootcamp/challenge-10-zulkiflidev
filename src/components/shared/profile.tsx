@@ -19,7 +19,7 @@ function Profile({ isLoggedIn, userName, profileImage, variant = 'transparent' }
         <Link href="/login">
           <Button variant={isTransparent ? "outline-white" : "outline"}>Sign In</Button>
         </Link>
-        <Link href="/register">
+        <Link href="/login?tab=signup">
           <Button variant={isTransparent ? "solid-white" : "default"}>Sign Up</Button>
         </Link>
       </div>

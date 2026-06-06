@@ -14,13 +14,18 @@ const apiClient = axios.create({
 
 });
 
+
+
 // Request Interceptor: Menyisipkan token secara otomatis jika user sudah login
 apiClient.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+
+    const token = useAuthStore.getState().token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+
+
 });
 
 export default apiClient;
