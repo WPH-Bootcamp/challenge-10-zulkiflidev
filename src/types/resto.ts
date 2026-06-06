@@ -27,3 +27,14 @@ export interface Restaurant {
   isFrequentlyOrdered: boolean;
 
 }
+
+export interface RestaurantParams {
+  location?: string;
+  range?: number;
+  priceMin?: number;
+  priceMax?: number;
+  rating?: number;
+  category?: string;
+  page?: number;
+  limit?: number;
+}

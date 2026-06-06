@@ -1,9 +1,157 @@
-import React from 'react'
+"use client";
 
-function OrdersPage() {
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/authStore';
+
+import { useMyOrders } from '@/lib/query/useOrder';
+import { useCreateReview } from '@/lib/query/useReview';
+import Navbar from '@/components/shared/navbar';
+import Footer from '@/components/shared/footer';
+import { Button } from '@/components/ui/button';
+
+import { Loader2 } from 'lucide-react';
+import { OrderData } from '@/types/order';
+import { OrderTabs } from '@/components/orders/OrderTabs';
+import { OrderEmptyState } from '@/components/orders/OrderEmptyState';
+import { OrderCard } from '@/components/orders/OrderCard';
+import { OrderReviewModal } from '@/components/orders/OrderReviewModal';
+
+export default function OrdersPage() {
+  const router = useRouter();
+  const authToken = useAuthStore((state) => state.token);
+
+  const [isMounted, setIsMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState('done');
+
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
+
+  const { 
+    data: ordersResponse, 
+    isPending: ordersIsPending, 
+    isError: ordersIsError 
+  } = useMyOrders({ status: activeTab, page: 1, limit: 10 }, authToken);
+
+  const { mutate: createReview, isPending: isSubmittingReview } = useCreateReview();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && !authToken) {
+      router.push('/login');
+    }
+  }, [authToken, isMounted, router]);
+
+  if (!isMounted) return null;
+
+  const handleSubmitReview = (rating: number, comment: string) => {
+    if (!selectedOrder) return;
+
+    const restaurantId = selectedOrder.restaurants?.[0]?.restaurant?.id;
+    if (!restaurantId || rating === 0) return;
+
+    createReview(
+      {
+        transactionId: selectedOrder.transactionId,
+        restaurantId,
+        star: rating,
+        comment,
+        menuIds: selectedOrder.restaurants?.[0]?.items?.map((item) => item.menuId) || [],
+      },
+      {
+        onSuccess: () => {
+          setReviewModalOpen(false);
+          alert("Review berhasil dikirim!");
+        },
+        onError: () => alert("Gagal mengirim review.")
+      }
+    );
+  };
+
+
+  const ordersArray: OrderData[] = Array.isArray(ordersResponse?.data?.data)
+    ? ordersResponse?.data?.data
+    : Array.isArray(ordersResponse?.data?.orders)
+      ? ordersResponse?.data?.orders
+      : Array.isArray(ordersResponse?.data)
+        ? ordersResponse?.data
+        : [];
+
   return (
-    <div>OrdersPage</div>
-  )
-}
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Navbar variant="solid" />
+      
+      <main className="flex-1 py-8 md:py-12 px-4 md:px-16">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-extrabold text-neutral-950 mb-8">My Orders</h1>
 
-export default OrdersPage
+          <OrderTabs 
+            activeTab={activeTab} 
+            onTabChange={setActiveTab} 
+          />
+
+          {ordersIsPending && (
+            
+            <div className="flex flex-col items-center justify-center py-24 bg-white
+                            rounded-3xl border border-gray-100 shadow-sm">
+              <Loader2 className="w-12 h-12 text-primary-100 animate-spin mb-4" />
+              <p className="text-gray-500 font-medium">Memuat riwayat pesanan...</p>
+            </div>
+
+          )}
+
+          {!ordersIsPending && ordersIsError && (
+            
+            <div className="flex flex-col items-center justify-center py-24 bg-white 
+                            rounded-3xl border border-gray-100 shadow-sm">
+              <p className="text-red-500 font-bold text-xl mb-4">Gagal memuat pesanan</p>
+              <Button onClick={() => window.location.reload()} 
+                      className="rounded-full bg-primary-100">Coba Lagi</Button>
+            
+            </div>
+          )}
+
+          {!ordersIsPending && !ordersIsError && (
+            
+            <div className="space-y-6">
+              {ordersArray.length === 0 ? (
+                <OrderEmptyState />
+              ) 
+              : (
+                ordersArray.map((order: OrderData) => (
+                  
+                  <OrderCard 
+                    key={order.transactionId} 
+                    order={order} 
+                    onReviewClick={(selected) => {
+                      setSelectedOrder(selected);
+                      setReviewModalOpen(true);
+                    }} 
+
+                  />
+                ))
+              )}
+            </div>
+          )}
+
+          <OrderReviewModal
+
+            isOpen={reviewModalOpen}
+            onClose={() => setReviewModalOpen(false)}
+          
+            onSubmit={handleSubmitReview}
+            isSubmitting={isSubmittingReview}
+            restaurantName={selectedOrder?.restaurants?.[0]?.restaurant?.name}
+          
+          />
+
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}

@@ -5,8 +5,8 @@ import Socialmedia from '../ui/socialmedia'
 function Footer() {
   return (
     <div className="bg-neutral-950 w-full">
-        <div className="max-w-7xl mx-auto flex flex-row flex-wrap md:flex-nowrap px-4 
-                        md:px-16 gap-8 md:gap-16 justify-between items-start w-full">
+        <div className="max-w-[1600px] mx-auto flex flex-row flex-wrap md:flex-nowrap px-4 
+                        md:px-24 lg:px-32 gap-8 md:gap-16 justify-between items-start w-full">
 
             <div className="flex flex-col flex-1 py-16 gap-4 items-start">
                 <Logo />

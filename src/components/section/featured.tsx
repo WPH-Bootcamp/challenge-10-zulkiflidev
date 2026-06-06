@@ -17,12 +17,12 @@ function FeaturedSection() {
       
       {/* Overlay gradasi gelap ala Netflix agar teks/konten nantinya bisa terbaca jelas */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 
-                       via-black/20 to-transparent" />
+                       via-black/20 to-transparent pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent 
-                      to-transparent" />
+                      to-transparent pointer-events-none" />
 
       {/* Konten Teks di Tengah */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 pointer-events-none">
         <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-extrabold 
                       text-center drop-shadow-md">
           Explore Culinary Experiences
@@ -32,7 +32,7 @@ function FeaturedSection() {
         </p>
         
         {/* Input Search Bar */}
-        <div className="w-full max-w-2xl mt-6 md:mt-8 relative">
+        <div className="w-full max-w-2xl mt-6 md:mt-8 relative pointer-events-auto">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500" 
                   size={20} />
           <Input 
