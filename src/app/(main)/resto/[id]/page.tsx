@@ -32,7 +32,7 @@ function RestoDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = React.use(params);
   const id = Number(resolvedParams.id);
 
-  // --- 1. STATE & STORES ---
+  //state & stores...
   const authToken = useAuthStore((state) => state.token);
   const [isMounted, setIsMounted] = useState(false);
   const [addingId, setAddingId] = useState<number | null>(null);
@@ -76,13 +76,15 @@ function RestoDetailPage({ params }: { params: Promise<{ id: string }> }) {
 
   // Menambahkan menu baru ke keranjang
   const handleAddToCart = (menuId: number) => {
+
     setAddingId(menuId);
     addToCart(
       { restaurantId: id, menuId, quantity: 1 },
       {
-        onSettled: () => setAddingId(null), // onSettled otomatis dipanggil saat sukses maupun gagal
+        onSettled: () => setAddingId(null),
       }
     );
+
   };
 
   if (!isMounted) return null;
@@ -128,9 +130,11 @@ function RestoDetailPage({ params }: { params: Promise<{ id: string }> }) {
 
       <Navbar variant="solid" />      
       <FeaturedResto restoDetail={restoDetail} />
+      
       <div className="px-4 md:px-24 lg:px-32 pb-16 max-w-2xl">
         <RestoCard resto={restoDetail} />
       </div>
+
       <MenuSection foods={foods} drinks={drinks} menuSectionProps={menuSectionProps} />
       <UserReviewSection reviews={restoDetail?.reviews} />
       <Footer />

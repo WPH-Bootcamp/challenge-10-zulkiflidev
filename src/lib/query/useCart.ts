@@ -66,9 +66,11 @@ export const useUpdateCartItem = () => {
   return useMutation({
 
       mutationFn: ({ id, quantity }: { id: number; quantity: number }) =>
+
         updateCartItem(id, quantity),
       
       onSuccess: () => {
+        
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       },
     

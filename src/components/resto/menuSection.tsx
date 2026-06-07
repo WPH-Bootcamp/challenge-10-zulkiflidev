@@ -35,7 +35,8 @@ function MenuSection({ foods, drinks, menuSectionProps }: MenuSectionProps) {
         <h2 className="text-3xl font-extrabold mb-8 text-neutral-950">Menu</h2>
 
         {/* Filter Menu Makanan & Minuman: */}
-        <div className="flex flex-row gap-3 mb-10 overflow-x-auto scrollbar-hide">
+        <div className="flex flex-row gap-3 mb-10 overflow-x-auto scrollbar-hide -mx-4 px-4
+                        md:mx-0 md:px-0">
           
           {FoodCategories.map((tab) => (
 
@@ -45,11 +46,12 @@ function MenuSection({ foods, drinks, menuSectionProps }: MenuSectionProps) {
                 onClick={() => setActiveTab(tab.id as 'All' | 'Food' | 'Drink')}
 
                 className={cn(
-                  "rounded-full px-8 py-6 h-auto text-base font-bold transition-all",
+                  "shrink-0 whitespace-nowrap rounded-full px-4 py-3 md:px-8 md:py-6 h-auto text-sm md:text-base font-bold transition-all",
                   activeTab === tab.id
                     ? "bg-primary-100 text-white shadow-lg shadow-primary-100/20"
                     : "border-gray-200 text-gray-500 hover:border-primary-100 hover:text-primary-100"
                 )}
+                
               >{tab.label}
             </Button>
 

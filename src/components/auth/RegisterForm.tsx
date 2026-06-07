@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 
 import { useRegister } from "@/lib/query/useAuth";
 import { useAuthStore } from "@/store/authStore";
@@ -22,39 +25,50 @@ interface ApiError extends Error {
   };
 }
 
+const registerSchema = z
+  .object({
+    name: z.string().min(1, { message: "Nama wajib diisi" }),
+    email: z.string().min(1, { message: "Email wajib diisi" }).email({ message: "Format email tidak valid" }),
+    phone: z.string().min(1, { message: "Nomor telepon wajib diisi" }),
+    password: z.string().min(6, { message: "Password minimal 6 karakter" }),
+    confirmPassword: z.string().min(1, { message: "Konfirmasi password wajib diisi" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password tidak cocok",
+    path: ["confirmPassword"],
+  });
+
+type RegisterFormValues = z.infer<typeof registerSchema>;
+
 export default function RegisterForm() {
   const router = useRouter();
-  const { mutate: register, isPending } = useRegister();
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const { mutate: registerMutate, isPending } = useRegister();
 
   const [error, setError] = useState<string | null>(null);
   const [showPass, setShowPass] = useState(false);
 
-  //Fungsi tunggal untuk cek perubahan pada semua input form
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const {
+    register: formRegister,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (values: RegisterFormValues) => {
     setError(null);
 
-    // Validasi sederhana
-    if (form.password !== form.confirmPassword) {
-      return setError("Password tidak cocok");
-    }
-
     // Pisahkan 'confirmPassword' dari payload karena API tidak membutuhkannya
-    const { confirmPassword, ...registerData } = form;
+    const { confirmPassword, ...registerData } = values;
 
-    register(registerData, {
+    registerMutate(registerData, {
 
       onSuccess: (res: unknown) => {
         const response = res as AuthResponse;
@@ -74,51 +88,54 @@ export default function RegisterForm() {
   };
 
   return (
-    <form className="flex flex-col space-y-4" onSubmit={handleRegister}>
+    <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit)}>
       {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
-      <Input name="name" placeholder="Nama" value={form.name} 
-             onChange={handleChange} required />
+      <div className="flex flex-col space-y-1">
+        <Input placeholder="Nama" {...formRegister("name")} />
+        {errors.name && <p className="text-xs text-red-500 pl-1">{errors.name.message}</p>}
+      </div>
       
-      <Input name="email" type="email" placeholder="Email" value={form.email} 
-             onChange={handleChange} required />
+      <div className="flex flex-col space-y-1">
+        <Input type="email" placeholder="Email" {...formRegister("email")} />
+        {errors.email && <p className="text-xs text-red-500 pl-1">{errors.email.message}</p>}
+      </div>
       
-      <Input name="phone" placeholder="Nomor Telepon" value={form.phone} 
-             onChange={handleChange} required />
-
-      <div className="relative">
-
-        <Input
-          name="password"
-          type={showPass ? "text" : "password"}
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-
-        <button type="button" onClick={() => setShowPass(!showPass)} 
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-          {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
-
+      <div className="flex flex-col space-y-1">
+        <Input placeholder="Nomor Telepon" {...formRegister("phone")} />
+        {errors.phone && <p className="text-xs text-red-500 pl-1">{errors.phone.message}</p>}
       </div>
 
-      <div className="relative">
-        
-        <Input
-          name="confirmPassword"
-          type={showPass ? "text" : "password"}
-          placeholder="Konfirmasi Password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+      <div className="flex flex-col space-y-1">
+        <div className="relative">
+          <Input
+            type={showPass ? "text" : "password"}
+            placeholder="Password"
+            className="pr-10"
+            {...formRegister("password")}
+          />
+          <button type="button" onClick={() => setShowPass(!showPass)} 
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+            {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+        {errors.password && <p className="text-xs text-red-500 pl-1">{errors.password.message}</p>}
+      </div>
 
-        <button type="button" onClick={() => setShowPass(!showPass)} 
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-          {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
+      <div className="flex flex-col space-y-1">
+        <div className="relative">
+          <Input
+            type={showPass ? "text" : "password"}
+            placeholder="Konfirmasi Password"
+            className="pr-10"
+            {...formRegister("confirmPassword")}
+          />
+          <button type="button" onClick={() => setShowPass(!showPass)} 
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+            {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+          </button>
+        </div>
+        {errors.confirmPassword && <p className="text-xs text-red-500 pl-1">{errors.confirmPassword.message}</p>}
       </div>
 
       <Button type="submit" className="w-full" disabled={isPending}>
