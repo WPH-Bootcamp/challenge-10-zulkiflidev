@@ -54,7 +54,6 @@ function CheckoutContent() {
   const { data: cartResponse, isPending: isCartLoading, isError: isCartError } = useCart(authToken);
   const { mutate: checkoutOrder, isPending: isCheckingOut } = useCheckoutOrder();
 
-  // --- 1. EFEK SAMPING (LIFECYCLE) ---
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -70,7 +69,7 @@ function CheckoutContent() {
     }
   }, [profileResponse]);
 
-  // --- 2. KONDISI LOADING & ERROR ---
+  //loading & error...
   if (!isMounted || isCartLoading) {
     return (
       <div className="flex-1 flex items-center justify-center min-h-[50vh]">
@@ -80,7 +79,7 @@ function CheckoutContent() {
     );
   }
 
-  // --- 3. PENGELOLAAN DATA KERANJANG ---
+  //Cart...
   const cartData: CartGroup[] = cartResponse?.data?.cart || [];
 
   const targetCartGroups = restoIdParam 
@@ -107,7 +106,7 @@ function CheckoutContent() {
   const serviceFee = 2000;
   const totalPayment = subtotal + deliveryFee + serviceFee;
 
-  // --- 4. FUNGSI CHECKOUT PESANAN ---
+  // Checkout pesanan...
   const handleCheckout = () => {
     // Pengecekan awal (Guard Clause)
     if (!deliveryAddress.trim()) return setErrorMessage("Alamat pengiriman wajib diisi.");
@@ -139,7 +138,8 @@ function CheckoutContent() {
         
         if (response.success && txId) {
           router.push(`/checkout/success?txId=${txId}`);
-        } else {
+        } 
+        else {
           setErrorMessage("Terjadi kesalahan dari server.");
         }
       },

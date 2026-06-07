@@ -23,11 +23,10 @@ export const useDetailRestaurant = (id: number, token: string | null) => {
 
 
 //hook untuk daftar semua restoran dengan filter
-export const useRestaurants = (params: RestaurantParams, token: string | null) => {
+export const useRestaurants = (params: RestaurantParams) => {
   return useQuery({
     queryKey: ["restaurants", params],
     queryFn: () => getRestaurants(params),
-    enabled: !!token,
   });
 };
 
@@ -60,6 +59,3 @@ export const useSearchRestaurants = (params: { q: string; page?: number; limit?:
     enabled: !!token && !!params.q,
   });
 };
-
-
-

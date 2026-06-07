@@ -17,15 +17,15 @@ function RestoCategoriesMenu() {
   return (
     <div className="bg-white text-neutral-950 py-8 w-full">
       
-      <div className="flex flex-row justify-start md:justify-between overflow-x-auto gap-4
-                      px-4 md:px-24 lg:px-32 pb-8 pt-2 scrollbar-hide">
+      <div className="grid grid-cols-3 md:flex md:flex-row justify-start md:justify-between gap-4
+                      px-4 md:px-24 lg:px-32 pb-8 pt-2">
 
         {RESTO_CATEGORIES_MENU.map((menu, index) => (
 
             <Button 
               key={index} 
               variant="outline" 
-              className="flex flex-col gap-3 h-auto py-4 px-6 rounded-2xl border-gray-200 
+              className="flex flex-col gap-3 h-auto py-4 px-2 md:px-6 rounded-2xl border-gray-200 
                         shadow-sm hover:border-primary hover:text-primary transition-colors"
             >
 

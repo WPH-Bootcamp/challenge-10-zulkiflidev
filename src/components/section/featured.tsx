@@ -4,7 +4,12 @@ import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 
-function FeaturedSection() {
+interface FeaturedSectionProps {
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+}
+
+function FeaturedSection({ searchQuery, onSearchChange }: FeaturedSectionProps) {
   return (
     <div className="relative w-full h-screen">
       <Image 
@@ -38,7 +43,9 @@ function FeaturedSection() {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500" 
                   size={20} />
           <Input 
-            placeholder="Search restaurants, food and drink" 
+            placeholder="Search restaurants, food and drink..." 
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
             className="w-full !bg-white dark:!bg-white border-0 text-black pl-12 py-4 md:py-6
                       rounded-full text-sm md:text-base shadow-lg focus-visible:ring-primary 
                       focus-visible:ring-offset-0"
