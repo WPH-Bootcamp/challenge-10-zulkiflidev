@@ -34,10 +34,10 @@ export function EditReviewModal({ isOpen, onClose, review }: EditReviewModalProp
       {
         onSuccess: () => {
           onClose();
-          alert("Review berhasil diupdate!");
+          alert("Review successfully updated!");
         },
         onError: () => {
-          alert("Gagal mengupdate review.");
+          alert("Failed to update review.");
         }
       }
     );
@@ -82,7 +82,7 @@ export function EditReviewModal({ isOpen, onClose, review }: EditReviewModalProp
         <textarea
           value={editComment}
           onChange={(e) => setEditComment(e.target.value)}
-          placeholder="Ceritakan pengalaman Anda di sini (opsional)..."
+          placeholder="Tell us about your experience here (optional)..."
           className="w-full border border-gray-200 rounded-2xl p-4 min-h-[120px] outline-none 
                     focus:border-primary-100 resize-none mb-6"
         />

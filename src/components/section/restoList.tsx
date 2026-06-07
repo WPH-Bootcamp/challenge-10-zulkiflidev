@@ -26,7 +26,7 @@ function RestoList({ title, data, isPending, isError, isMounted, requireAuth, to
     
     if (requireAuth && !token) {
       return <p className="text-gray-500 col-span-full">
-                           Silakan login untuk melihat {title ? title.toLowerCase() : 'data'}.</p>;
+                           Please login to view {title ? title.toLowerCase() : 'data'}.</p>;
     }    
     
     if (isPending) return <p className="text-gray-500 col-span-full">
