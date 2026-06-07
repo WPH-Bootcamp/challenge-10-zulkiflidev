@@ -64,7 +64,7 @@ export default function OrdersPage() {
       {
         onSuccess: () => {
           setReviewModalOpen(false);
-          alert("Review berhasil dikirim!");
+          alert("Review submitted successfully!");
         },
         onError: () => alert("Gagal mengirim review.")
       }
@@ -96,7 +96,7 @@ export default function OrdersPage() {
             <div className="flex flex-col items-center justify-center py-24 bg-white
                             rounded-3xl border border-gray-100 shadow-sm">
               <Loader2 className="w-12 h-12 text-primary-100 animate-spin mb-4" />
-              <p className="text-gray-500 font-medium">Memuat riwayat pesanan...</p>
+              <p className="text-gray-500 font-medium">Loading order history...</p>
             </div>
 
           )}
@@ -105,9 +105,9 @@ export default function OrdersPage() {
             
             <div className="flex flex-col items-center justify-center py-24 bg-white 
                             rounded-3xl border border-gray-100 shadow-sm">
-              <p className="text-red-500 font-bold text-xl mb-4">Gagal memuat pesanan</p>
+              <p className="text-red-500 font-bold text-xl mb-4">Failed to load order</p>
               <Button onClick={() => window.location.reload()} 
-                      className="rounded-full bg-primary-100">Coba Lagi</Button>
+                      className="rounded-full bg-primary-100">Try again</Button>
             
             </div>
           )}

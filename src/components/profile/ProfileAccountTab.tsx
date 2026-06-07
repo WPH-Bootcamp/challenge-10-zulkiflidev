@@ -43,13 +43,13 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
 
       {
         onSuccess: () => {
-          setUpdateMessage({ type: 'success', text: 'Profil berhasil diperbarui!' });
+          setUpdateMessage({ type: 'success', text: 'Profile updated successfully!' });
           setTimeout(() => setUpdateMessage(null), 3000);
         },
         
         onError: (err: unknown) => {
           const errorResponse = err as { response?: { data?: { message?: string } } };
-          const msg = errorResponse.response?.data?.message || 'Gagal memperbarui profil.';
+          const msg = errorResponse.response?.data?.message || 'Failed to update profile.';
           setUpdateMessage({ type: 'error', text: msg });
         }
       }

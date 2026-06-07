@@ -49,7 +49,7 @@ export default function ProfilePage() {
       <p className="text-neutral-400 text-display-xl font-bold">Error!</p>
       
       <p className="text-neutral-400 text-display-lg text-center">
-        {profileError instanceof Error ? profileError.message : "Gagal memuat profil!"}
+        {profileError instanceof Error ? profileError.message : "Failed to load profile!"}
       </p>
 
       <Button onClick={() => window.location.reload()} className="mt-8 bg-primary-100 rounded-full px-12">

@@ -23,7 +23,7 @@ export function ProfileReviewsTab({ authToken }: ProfileReviewsTabProps) {
   };
 
   const handleDeleteReview = (id: number) => {
-    if (!window.confirm("Apakah Anda yakin ingin menghapus review ini?")) return;
+    if (!window.confirm("Are you sure you want to delete this review?")) return;
     
     setDeletingId(id);
     deleteReview(id, {
@@ -53,7 +53,7 @@ export function ProfileReviewsTab({ authToken }: ProfileReviewsTabProps) {
       <div className="flex flex-col items-center justify-center py-20 text-center bg-gray-50 
                       rounded-3xl border-2 border-dashed border-gray-200">
         <Star size={64} className="text-gray-300 mb-6" />
-        <p className="text-xl text-gray-500 font-bold mb-6">You haven&apos;t written any reviews yet</p>
+        <p className="text-xl text-gray-500 font-bold mb-6">You haven't written any reviews yet</p>
       
       </div>
 
@@ -69,6 +69,7 @@ export function ProfileReviewsTab({ authToken }: ProfileReviewsTabProps) {
           <div key={index} className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
             
             <div className="flex justify-between items-start mb-4">
+              
               <div>
                 <h3 className="font-bold text-lg text-neutral-950">{review.restaurant?.name || "Restaurant"}</h3>
                 <p className="text-xs text-gray-500 mt-1">Transaction ID: {review.transactionId}</p>

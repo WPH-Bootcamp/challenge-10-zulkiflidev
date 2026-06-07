@@ -27,14 +27,14 @@ interface ApiError extends Error {
 
 const registerSchema = z
   .object({
-    name: z.string().min(1, { message: "Nama wajib diisi" }),
-    email: z.string().min(1, { message: "Email wajib diisi" }).email({ message: "Format email tidak valid" }),
-    phone: z.string().min(1, { message: "Nomor telepon wajib diisi" }),
-    password: z.string().min(6, { message: "Password minimal 6 karakter" }),
-    confirmPassword: z.string().min(1, { message: "Konfirmasi password wajib diisi" }),
+    name: z.string().min(1, { message: "Name is required" }),
+    email: z.string().min(1, { message: "Email is required" }).email({ message: "Invalid email format" }),
+    phone: z.string().min(1, { message: "Phone number is required" }),
+    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
+    confirmPassword: z.string().min(1, { message: "Password confirmation is required" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Password tidak cocok",
+    message: "Password does not match",
     path: ["confirmPassword"],
   });
 
@@ -81,7 +81,7 @@ export default function RegisterForm() {
       
       onError: (err: unknown) => {
         const error = err as ApiError;
-        setError(error.response?.data?.message || "Registrasi gagal. Silakan coba lagi.");
+        setError(error.response?.data?.message || "Registration failed. Please try again.");
       },
       
     });
@@ -92,7 +92,7 @@ export default function RegisterForm() {
       {error && <p className="text-sm text-red-500 text-center">{error}</p>}
 
       <div className="flex flex-col space-y-1">
-        <Input placeholder="Nama" {...formRegister("name")} />
+        <Input placeholder="Name" {...formRegister("name")} />
         {errors.name && <p className="text-xs text-red-500 pl-1">{errors.name.message}</p>}
       </div>
       
@@ -102,7 +102,7 @@ export default function RegisterForm() {
       </div>
       
       <div className="flex flex-col space-y-1">
-        <Input placeholder="Nomor Telepon" {...formRegister("phone")} />
+        <Input placeholder="Phone Number" {...formRegister("phone")} />
         {errors.phone && <p className="text-xs text-red-500 pl-1">{errors.phone.message}</p>}
       </div>
 
@@ -126,7 +126,7 @@ export default function RegisterForm() {
         <div className="relative">
           <Input
             type={showPass ? "text" : "password"}
-            placeholder="Konfirmasi Password"
+            placeholder="Confirm Password"
             className="pr-10"
             {...formRegister("confirmPassword")}
           />
@@ -139,7 +139,7 @@ export default function RegisterForm() {
       </div>
 
       <Button type="submit" className="w-full" disabled={isPending}>
-        {isPending ? "Memuat..." : "Daftar"}
+        {isPending ? "Loading..." : "Register"}
       </Button>
       
     </form>

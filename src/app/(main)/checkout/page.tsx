@@ -108,20 +108,23 @@ function CheckoutContent() {
 
   // Checkout pesanan...
   const handleCheckout = () => {
-    // Pengecekan awal (Guard Clause)
-    if (!deliveryAddress.trim()) return setErrorMessage("Alamat pengiriman wajib diisi.");
+
+    // Pengecekan awal
+    if (!deliveryAddress.trim()) return setErrorMessage("Shipping address is required.");
     
     setErrorMessage(null);
 
-    // Siapkan Payload data untuk API
+    // Siapkan data untuk API
     const payload = {
       
       restaurants: targetCartGroups.map((group) => ({
+
         restaurantId: Number(group.restaurant.id),
         items: group.items.map((item) => ({
           menuId: Number(item.menu.id),
           quantity: item.quantity,
         })),
+      
       })),
 
       deliveryAddress,
@@ -132,6 +135,7 @@ function CheckoutContent() {
 
     // Jalankan perintah checkout
     checkoutOrder(payload, {
+      
       onSuccess: (res: unknown) => {
         const response = res as CheckoutResponse;
         const txId = response.data?.transaction?.transactionId;
@@ -142,7 +146,9 @@ function CheckoutContent() {
         else {
           setErrorMessage("Terjadi kesalahan dari server.");
         }
+        
       },
+
       onError: (err: unknown) => {
         const errorMsg = (err as CheckoutError)?.response?.data?.message;
         setErrorMessage(errorMsg || "Gagal memproses pesanan");
