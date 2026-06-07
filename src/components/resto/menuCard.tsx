@@ -30,15 +30,19 @@ function MenuCard({ menu, cartItem, addingId, updatingId, onAdd, onUpdate }: Men
           alt={menu.name || menu.foodName}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
+        
       </div>
 
       <div className="flex flex-col p-6 flex-grow">
+        
         <h4 className="font-bold text-xl text-neutral-950 mb-2">{menu.name || menu.foodName}</h4>
+        
         {menu.description && (
           <p className="text-sm text-gray-500 mt-1 line-clamp-2 mb-4">{menu.description}</p>
         )}
 
         <div className="mt-auto flex flex-row items-center justify-between pt-4 border-t border-gray-50">
+          
           <p className="text-xl font-extrabold text-primary-100">Rp {menu.price?.toLocaleString('id-ID')}</p>
           
           {cartItem ? (
@@ -84,7 +88,9 @@ function MenuCard({ menu, cartItem, addingId, updatingId, onAdd, onUpdate }: Men
               {addingId === menu.id ? <Loader2 className="animate-spin" size={18} /> : <Plus size={18} />}
               {addingId === menu.id ? "Adding..." : "Add"}
             </Button>
+
           )}
+
         </div>
       </div>
     </div>

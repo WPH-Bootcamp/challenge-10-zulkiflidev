@@ -22,7 +22,9 @@ function FeaturedSection() {
                       to-transparent pointer-events-none" />
 
       {/* Konten Teks di Tengah */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 pointer-events-none">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 px-4 
+                      pointer-events-none">
+        
         <h1 className="text-white text-2xl md:text-3xl lg:text-5xl font-extrabold 
                       text-center drop-shadow-md">
           Explore Culinary Experiences

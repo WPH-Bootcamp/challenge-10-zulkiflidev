@@ -15,13 +15,17 @@ function Profile({ isLoggedIn, userName, profileImage, variant = 'transparent' }
 
   if (!isLoggedIn) {
     return (
+      
       <div className="flex flex-row gap-2 md:gap-8 justify-start items-center">
+        
         <Link href="/login">
           <Button variant={isTransparent ? "outline-white" : "outline"}>Sign In</Button>
         </Link>
+        
         <Link href="/login?tab=signup">
           <Button variant={isTransparent ? "solid-white" : "default"}>Sign Up</Button>
         </Link>
+
       </div>
     );
   }
@@ -36,7 +40,10 @@ function Profile({ isLoggedIn, userName, profileImage, variant = 'transparent' }
               className={!isTransparent ? 'invert' : ''}
             />            
           </Link>
-          <Link href="/profile" className="flex flex-row gap-2 md:gap-4 justify-start items-center hover:opacity-80 transition-opacity">
+
+          <Link href="/profile" className="flex flex-row gap-2 md:gap-4 justify-start items-
+                                           center hover:opacity-80 transition-opacity">
+            
             <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-200">
               <Image 
                 src={profileImage || "/app/main/profile-image.png"} 
@@ -47,6 +54,7 @@ function Profile({ isLoggedIn, userName, profileImage, variant = 'transparent' }
             </div>
             <p className="text-base md:text-xl font-extrabold hidden 
                           sm:block">{userName || "User"}</p>
+          
           </Link>
 
         </div>

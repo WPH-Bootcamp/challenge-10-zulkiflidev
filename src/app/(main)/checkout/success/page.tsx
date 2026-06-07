@@ -37,10 +37,11 @@ function CheckoutSuccessContent() {
 
         <h1 className="text-3xl font-extrabold text-neutral-950 mb-2">Order Successful!</h1>
         <p className="text-gray-500 mb-8">
-          Thank you for your order. We&apos;ve received your request and will begin processing it shortly.
+          Thank you for your order. We've received your request and will begin processing it shortly.
         </p>
 
-        <div className="bg-gray-50 border border-gray-100 rounded-2xl w-full p-6 mb-8 flex flex-col items-center">
+        <div className="bg-gray-50 border border-gray-100 rounded-2xl w-full p-6 mb-8 flex flex-col 
+                        items-center">
           
           <Receipt className="text-gray-400 mb-3" size={24} />
           <p className="text-sm text-gray-500 font-medium mb-1">Transaction ID</p>
@@ -78,15 +79,16 @@ export default function CheckoutSuccessPage() {
       
       <Navbar variant="solid" />
 
-      <Suspense fallback={
-        <div className="flex-1 flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-primary-300 border-t-transparent rounded-full 
-                          animate-spin"></div>
-        </div>
-      }>
+      <Suspense fallback=
+        {
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-primary-300 border-t-transparent rounded-full 
+                            animate-spin"></div>
+          </div>
+        }>
         <CheckoutSuccessContent />
-      </Suspense>
-    
+      </Suspense>    
+      
       <Footer />
     
     </div>

@@ -21,56 +21,66 @@ import FeaturedResto from '@/components/resto/featuredResto';
 import MenuSection from '@/components/resto/menuSection';
 import UserReviewSection from '@/components/resto/userReviewSection';
 
+interface CartGroup {
+  restaurant: { id: number };
+  items: CartItem[];
+}
+
 //Main...
 function RestoDetailPage({ params }: { params: Promise<{ id: string }> }) {
 
   const resolvedParams = React.use(params);
   const id = Number(resolvedParams.id);
+
+  // --- 1. STATE & STORES ---
   const authToken = useAuthStore((state) => state.token);
   const [isMounted, setIsMounted] = useState(false);
   const [addingId, setAddingId] = useState<number | null>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
 
+  //ini untuk API
   const { data: restoResponse, isPending: detailIsPending, isError: detailIsError } = useDetailRestaurant(id, authToken);
   const { data: cartResponse } = useCart(authToken);
+
   const { mutate: addToCart } = useAddToCart();
   const { mutate: updateQuantity } = useUpdateCartItem();
   const { mutate: deleteCartItem } = useDeleteCartItem();
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsMounted(true); // Hindari hydration error
   }, []);
 
+
+  // Cek apakah sebuah menu sudah ada di keranjang
   const getCartItem = (menuId: number) => {
-    if (!cartResponse?.data?.cart) return null;
-    for (const group of cartResponse.data.cart) {
-      if (group.restaurant.id === id) {
-        const item = group.items.find((i: CartItem) => i.menu.id === menuId);
-        if (item) return item;
-      }
-    }
-    return null;
+    const cartGroups: CartGroup[] = cartResponse?.data?.cart || [];
+    const currentRestoGroup = cartGroups.find(group => group.restaurant.id === id);
+    
+    return currentRestoGroup?.items.find((item: CartItem) => item.menu.id === menuId) || null;
   };
 
-  const handleUpdateQuantity = (cartItemId: number, menuId: number, currentQty: number, delta: number) => {
+  // Mengubah jumlah pesanan (tambah/kurang/hapus)
+  const handleUpdateQuantity = (cartItemId: number, menuId: number, currentQty: number, 
+                               delta: number) => {
     const newQty = currentQty + delta;
     setUpdatingId(menuId);
-    if (newQty < 1) {
-      deleteCartItem(cartItemId, { onSettled: () => setUpdatingId(null) });
-    } 
-    
-    else {
-      updateQuantity({ id: cartItemId, quantity: newQty }, { onSettled: () => setUpdatingId(null) });
-    }
+
+      const onSettled = () => setUpdatingId(null); // Reset state loading setelah selesai
+
+      if (newQty < 1) {
+        deleteCartItem(cartItemId, { onSettled });
+      } else {
+        updateQuantity({ id: cartItemId, quantity: newQty }, { onSettled });
+      }
   };
 
+  // Menambahkan menu baru ke keranjang
   const handleAddToCart = (menuId: number) => {
     setAddingId(menuId);
     addToCart(
       { restaurantId: id, menuId, quantity: 1 },
       {
-        onSuccess: () => { setAddingId(null); console.log("Berhasil tambah ke keranjang"); },
-        onError: () => { setAddingId(null); console.error("Gagal tambah ke keranjang"); }
+        onSettled: () => setAddingId(null), // onSettled otomatis dipanggil saat sukses maupun gagal
       }
     );
   };
@@ -103,6 +113,7 @@ function RestoDetailPage({ params }: { params: Promise<{ id: string }> }) {
           <Button onClick={() => window.location.reload()}>Retry</Button>
         </div>
         <Footer />
+        
       </div>
     );
   }
@@ -115,19 +126,15 @@ function RestoDetailPage({ params }: { params: Promise<{ id: string }> }) {
   return (
     <div className="min-h-screen flex flex-col bg-white">
 
-      <Navbar variant="solid" />
-      
+      <Navbar variant="solid" />      
       <FeaturedResto restoDetail={restoDetail} />
-
       <div className="px-4 md:px-24 lg:px-32 pb-16 max-w-2xl">
         <RestoCard resto={restoDetail} />
       </div>
-
       <MenuSection foods={foods} drinks={drinks} menuSectionProps={menuSectionProps} />
-
       <UserReviewSection reviews={restoDetail?.reviews} />
-
       <Footer />
+
     </div>
   );
 }

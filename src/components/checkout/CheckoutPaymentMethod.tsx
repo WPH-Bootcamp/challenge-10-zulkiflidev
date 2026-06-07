@@ -41,7 +41,8 @@ export function CheckoutPaymentMethod({ paymentMethod, setPaymentMethod }: Check
 
             {paymentMethod === bank.id && (
               <div className="absolute -top-2 -right-2 bg-primary-100 rounded-full p-1 border-2 border-white">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="4" 
+                    strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
               </div>
             )}
 

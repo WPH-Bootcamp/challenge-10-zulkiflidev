@@ -18,10 +18,12 @@ export function EditReviewModal({ isOpen, onClose, review }: EditReviewModalProp
   const { mutate: updateReview, isPending: isUpdatingReview } = useUpdateReview();
 
   useEffect(() => {
+    
     if (review && isOpen) {
       setEditRating(review.star);
       setEditComment(review.comment || '');
     }
+
   }, [review, isOpen]);
 
   const handleUpdateReviewSubmit = () => {
@@ -39,13 +41,16 @@ export function EditReviewModal({ isOpen, onClose, review }: EditReviewModalProp
         }
       }
     );
+
   };
 
   if (!isOpen || !review) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto" onClick={onClose} />
+      
       <div className="relative bg-white rounded-3xl w-full max-w-lg p-8 shadow-2xl flex flex-col 
                       pointer-events-auto">
         <button 
@@ -90,7 +95,10 @@ export function EditReviewModal({ isOpen, onClose, review }: EditReviewModalProp
         >
           {isUpdatingReview ? <Loader2 className="animate-spin" size={20} /> : "Update Review"}
         </Button>
+
       </div>
+
     </div>
+    
   );
 }

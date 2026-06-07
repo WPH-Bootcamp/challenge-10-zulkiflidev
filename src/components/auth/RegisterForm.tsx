@@ -124,6 +124,7 @@ export default function RegisterForm() {
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? "Memuat..." : "Daftar"}
       </Button>
+      
     </form>
   );
 }
