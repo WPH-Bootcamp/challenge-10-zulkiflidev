@@ -59,7 +59,7 @@ function CartPage() {
   };
 
   const handleClearCart = () => {
-    if (confirm("Apakah Anda yakin ingin mengosongkan keranjang?")) {
+    if (confirm("Are you sure you want to empty the cart?")) {
       clearCart();
     }
   };
@@ -78,7 +78,7 @@ function CartPage() {
       <main className="flex-1 py-8 px-4 md:px-8 max-w-3xl mx-auto w-full">
 
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-extrabold text-neutral-950">Keranjang Saya</h1>
+          <h1 className="text-3xl font-extrabold text-neutral-950">My Cart</h1>
           
           {hasItems && (
             
@@ -91,7 +91,7 @@ function CartPage() {
             >
               <Trash2 size={18} />
 
-              {isClearing ? "Menghapus..." : "Kosongkan Keranjang"}
+              {isClearing ? "Delete......" : "Empty Cart"}
 
             </Button>
 
@@ -112,8 +112,8 @@ function CartPage() {
 
           <div className="text-center py-20">
             <ShoppingCart size={64} className="text-gray-300 mx-auto mb-4" />
-            <p className="text-red-500 mb-4">Gagal memuat keranjang.</p>
-            <Button onClick={() => window.location.reload()} variant="outline">Coba Lagi</Button>
+            <p className="text-red-500 mb-4">Failed to load cart.</p>
+            <Button onClick={() => window.location.reload()} variant="outline">Try again</Button>
           </div>
         
         )}
@@ -131,7 +131,7 @@ function CartPage() {
             </p>
             
             <Link href="/">
-              <Button className="rounded-full px-8 py-6 text-base font-bold">Mulai Pesan</Button>
+              <Button className="rounded-full px-8 py-6 text-base font-bold">Start Ordering</Button>
             </Link>
 
           </div>
