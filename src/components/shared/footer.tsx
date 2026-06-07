@@ -40,45 +40,7 @@ function Footer() {
                     <p className="text-neutral-25 text-md">Contact us</p>
                 </div>
             </div>
-
-
-            {/* 
-            <div className="flex flex-col py-16 gap-4 justify-center items-start w-1/3">
-              <Logo />
-              <p className="text-neutral-25 text-md">
-                Enjoy homemade flavors & chef’s signature dishes, freshly prepared every day. 
-                Order online or visit our nearest branch.
-              </p>
-
-              <p className="text-neutral-25 text-md font-bold pt-8">Follow on Social Media</p>
-
-              <Socialmedia />
-
-            </div>
-
-            <div className="flex flex-col py-16 gap-4 justify-center 
-                            items-start w-1/3">            
-                <p className="text-neutral-25 font-bold">Explore</p>
-                <p className="text-neutral-25 text-md">All Food</p>
-                <p className="text-neutral-25 text-md">Nearby</p>
-                <p className="text-neutral-25 text-md">Discount</p>
-                <p className="text-neutral-25 text-md">Best Seller</p>
-                <p className="text-neutral-25 text-md">Delivery</p>
-                <p className="text-neutral-25 text-md">Lunch</p>
-            </div>
-
-            <div className="flex flex-col py-16 gap-4 justify-center 
-                          items-start w-1/3">            
-                <p className="text-neutral-25 font-bold">Help</p>
-                <p className="text-neutral-25 text-md">How to Order</p>
-                <p className="text-neutral-25 text-md">Payment Methods</p>
-                <p className="text-neutral-25 text-md">Track My Order</p>
-                <p className="text-neutral-25 text-md">FAQ</p>
-                <p className="text-neutral-25 text-md">Contact us</p>
-
-             </div> */}
-
-
+          
         </div>
     </div>
   )

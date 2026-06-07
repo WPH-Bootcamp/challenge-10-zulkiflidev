@@ -48,10 +48,10 @@ export default function OrdersPage() {
   if (!isMounted) return null;
 
   const handleSubmitReview = (rating: number, comment: string) => {
-    if (!selectedOrder) return;
+    const restaurant = selectedOrder?.restaurants?.[0];
+    const restaurantId = restaurant?.restaurant?.id;
 
-    const restaurantId = selectedOrder.restaurants?.[0]?.restaurant?.id;
-    if (!restaurantId || rating === 0) return;
+    if (!selectedOrder || !restaurantId || rating === 0) return;
 
     createReview(
       {
@@ -59,7 +59,7 @@ export default function OrdersPage() {
         restaurantId,
         star: rating,
         comment,
-        menuIds: selectedOrder.restaurants?.[0]?.items?.map((item) => item.menuId) || [],
+        menuIds: restaurant?.items?.map((item) => item.menuId) || [],
       },
       {
         onSuccess: () => {
@@ -71,14 +71,12 @@ export default function OrdersPage() {
     );
   };
 
-
-  const ordersArray: OrderData[] = Array.isArray(ordersResponse?.data?.data)
-    ? ordersResponse?.data?.data
-    : Array.isArray(ordersResponse?.data?.orders)
-      ? ordersResponse?.data?.orders
-      : Array.isArray(ordersResponse?.data)
-        ? ordersResponse?.data
-        : [];
+  // Ambil daftar pesanan dari manapun letaknya...
+  const rawOrders = ordersResponse?.data?.data || 
+                    ordersResponse?.data?.orders || 
+                    ordersResponse?.data;
+                    
+  const ordersArray: OrderData[] = Array.isArray(rawOrders) ? rawOrders : [];
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">

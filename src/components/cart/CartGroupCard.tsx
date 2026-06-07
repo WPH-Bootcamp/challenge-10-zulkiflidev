@@ -88,7 +88,8 @@ export default function CartGroupCard({ group, updatingItemId, onUpdateQuantity 
                   variant="outline" 
                   disabled={isUpdating || quantity <= 1}
                   onClick={() => onUpdateQuantity(id, quantity, -1)}
-                  className="w-8 h-8 p-0 rounded-full text-gray-500 hover:text-primary-100 hover:border-primary-100"
+                  className="w-8 h-8 p-0 rounded-full text-gray-500 hover:text-primary-100 
+                             hover:border-primary-100"
                 >
                   {isUpdating ? <Loader2 className="animate-spin" size={14} /> : <Minus size={14} />}
                 </Button>

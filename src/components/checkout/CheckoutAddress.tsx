@@ -6,8 +6,10 @@ interface CheckoutAddressProps {
 
   deliveryAddress: string;
   setDeliveryAddress: (val: string) => void;
+
   phone: string;
   setPhone: (val: string) => void;
+  
   notes: string;
   setNotes: (val: string) => void;
 }
@@ -24,7 +26,7 @@ export function CheckoutAddress({
       
       <h2 className="text-xl font-bold text-neutral-950 mb-6 flex items-center gap-2">
         <MapPin size={24} className="text-primary-100" />
-        Delivery Address
+          Delivery Address
       </h2>
       <div className="space-y-4">
         
@@ -32,13 +34,14 @@ export function CheckoutAddress({
           
           value={deliveryAddress}
           onChange={(e) => setDeliveryAddress(e.target.value)}
-          placeholder="Masukkan alamat pengiriman lengkap..."
+          placeholder="Enter your complete shipping address..."
           className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4 min-h-[120px]
                     outline-none  focus:border-primary-100 resize-none transition-colors"
 
         />
 
-        <div className="flex flex-row gap-4 items-center bg-gray-50 border border-gray-200 rounded-2xl p-4">
+        <div className="flex flex-row gap-4 items-center bg-gray-50 border border-gray-200 
+                        rounded-2xl p-4">
           
           <Phone className="text-gray-400" size={20} />
 
@@ -57,8 +60,9 @@ export function CheckoutAddress({
           <textarea 
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Catatan untuk pengemudi (opsional)"
-            className="bg-transparent border-none outline-none w-full font-medium min-h-[60px] resize-none"
+            placeholder="Notes for drivers (optional)"
+            className="bg-transparent border-none outline-none w-full font-medium min-h-[60px] 
+                       resize-none"
           />
         </div>
 

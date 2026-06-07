@@ -125,9 +125,9 @@ function CartPage() {
                            flex-col items-center shadow-sm">
             
             <ShoppingCart size={64} className="text-gray-300 mb-6" />
-            <h2 className="text-2xl font-bold mb-2">Keranjang Anda Kosong</h2>
+            <h2 className="text-2xl font-bold mb-2">Your Cart is Empty</h2>
             <p className="text-gray-500 mb-8">
-              Sepertinya Anda belum menambahkan apa pun. Ayo mulai pesan makanan!
+              It looks like you haven't added anything yet. Let's start ordering food!
             </p>
             
             <Link href="/">

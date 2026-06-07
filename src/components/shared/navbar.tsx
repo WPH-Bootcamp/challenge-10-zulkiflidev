@@ -60,7 +60,8 @@ function Navbar({ variant = 'transparent' }: NavbarProps) {
       <div className="flex flex-row px-4 md:px-24 lg:px-32 py-4 justify-between 
                       items-center w-full">
         
-        <Logo />        
+        <Logo />    
+            
         <Profile 
           isLoggedIn={isLoggedIn} 
           variant={isTransparent ? 'transparent' : 'solid'} 

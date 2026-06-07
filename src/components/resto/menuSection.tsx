@@ -8,6 +8,7 @@ import type { Menu, CartItem } from '@/types';
 interface MenuSectionProps {
   foods: Menu[];
   drinks: Menu[];
+  
   menuSectionProps: {
     getCartItem: (menuId: number) => CartItem | null | undefined;
     addingId: number | null;
@@ -15,6 +16,7 @@ interface MenuSectionProps {
     onAdd: (menuId: number) => void;
     onUpdate: (cartItemId: number, menuId: number, currentQty: number, delta: number) => void;
   };
+
 }
 
 const FoodCategories = [
@@ -38,17 +40,17 @@ function MenuSection({ foods, drinks, menuSectionProps }: MenuSectionProps) {
           {FoodCategories.map((tab) => (
 
             <Button
-              key={tab.id}
-              variant={activeTab === tab.id ? 'default' : 'outline'}
-              onClick={() => setActiveTab(tab.id as 'All' | 'Food' | 'Drink')}
+                key={tab.id}
+                variant={activeTab === tab.id ? 'default' : 'outline'}
+                onClick={() => setActiveTab(tab.id as 'All' | 'Food' | 'Drink')}
 
-              className={cn(
-                "rounded-full px-8 py-6 h-auto text-base font-bold transition-all",
-                activeTab === tab.id
-                  ? "bg-primary-100 text-white shadow-lg shadow-primary-100/20"
-                  : "border-gray-200 text-gray-500 hover:border-primary-100 hover:text-primary-100"
-              )}
-            >{tab.label}
+                className={cn(
+                  "rounded-full px-8 py-6 h-auto text-base font-bold transition-all",
+                  activeTab === tab.id
+                    ? "bg-primary-100 text-white shadow-lg shadow-primary-100/20"
+                    : "border-gray-200 text-gray-500 hover:border-primary-100 hover:text-primary-100"
+                )}
+              >{tab.label}
             </Button>
 
           ))}

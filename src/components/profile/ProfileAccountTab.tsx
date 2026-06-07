@@ -38,18 +38,22 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
     setUpdateMessage(null);
 
     updateProfile(
+      
       { name, email, phone },
+
       {
         onSuccess: () => {
           setUpdateMessage({ type: 'success', text: 'Profil berhasil diperbarui!' });
           setTimeout(() => setUpdateMessage(null), 3000);
         },
+        
         onError: (err: unknown) => {
           const errorResponse = err as { response?: { data?: { message?: string } } };
           const msg = errorResponse.response?.data?.message || 'Gagal memperbarui profil.';
           setUpdateMessage({ type: 'error', text: msg });
         }
       }
+
     );
   };
 
@@ -58,6 +62,7 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
       
       {/* Photo Profile di Tengah */}
       <div className="flex flex-col items-center mb-12">
+
         <div className="relative w-32 h-32 rounded-full overflow-hidden bg-gray-100 border-4 border-gray-50 shadow-sm">
           <Image 
             src={profile.avatar || "/app/main/profile-image.png"} 
@@ -66,30 +71,39 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
             className="object-cover"
           />
         </div>
+      
       </div>
-
+    
       <div className="flex justify-start items-center mb-10">
+
         <h2 className="text-3xl font-extrabold text-neutral-950">Account Details</h2>
+      
       </div>
 
       {updateMessage && (
+      
         <div className={cn(
           "mb-8 p-4 rounded-2xl text-sm font-medium flex items-center gap-2",
           updateMessage.type === 'success' ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
         )}>
+
           {updateMessage.type === 'success' ? <Check size={18} /> : <X size={18} />}
           {updateMessage.text}
         </div>
+
       )}
 
       <form onSubmit={handleUpdate} className="space-y-10">
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
+        
           <div className="space-y-3">
             <label className="text-sm font-bold text-gray-400 ml-1">Full Name</label>
             <input 
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold text-neutral-950 outline-none focus:border-primary-100 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold 
+                         text-neutral-950 outline-none focus:border-primary-100 transition-colors"
               placeholder="Full Name"
             />
           </div>
@@ -99,7 +113,8 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
             <input 
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold text-neutral-950 outline-none focus:border-primary-100 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold 
+                         text-neutral-950 outline-none focus:border-primary-100 transition-colors"
               placeholder="Phone Number"
             />
           </div>
@@ -109,7 +124,8 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
             <input 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold text-neutral-950 outline-none focus:border-primary-100 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold 
+                         text-neutral-950 outline-none focus:border-primary-100 transition-colors"
               placeholder="Email Address"
               type="email"
             />
@@ -120,7 +136,8 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
             <input 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold text-neutral-950 outline-none focus:border-primary-100 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-2xl px-5 py-4 font-bold 
+                        text-neutral-950 outline-none focus:border-primary-100 transition-colors"
               placeholder="Password"
               type="password"
             />
@@ -131,7 +148,8 @@ export function ProfileAccountTab({ profile }: ProfileAccountTabProps) {
           <Button 
             type="submit" 
             disabled={profileIsUpdating}
-            className="bg-primary-100 hover:bg-primary-100/90 text-white rounded-full px-16 py-6 h-auto text-lg font-bold shadow-lg shadow-primary-100/20"
+            className="bg-primary-100 hover:bg-primary-100/90 text-white rounded-full px-16 py-6 
+                       h-auto text-lg font-bold shadow-lg shadow-primary-100/20"
           >
             {profileIsUpdating ? 'Updating...' : 'Update Profile'}
           </Button>

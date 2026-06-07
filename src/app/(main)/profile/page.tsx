@@ -45,13 +45,17 @@ export default function ProfilePage() {
 
   if (profileIsError || !profileData?.success) return (
     <div className="min-h-screen flex flex-col items-center justify-center w-full bg-white px-4">
+
       <p className="text-neutral-400 text-display-xl font-bold">Error!</p>
+      
       <p className="text-neutral-400 text-display-lg text-center">
         {profileError instanceof Error ? profileError.message : "Gagal memuat profil!"}
       </p>
+
       <Button onClick={() => window.location.reload()} className="mt-8 bg-primary-100 rounded-full px-12">
         Coba Lagi
       </Button>
+    
     </div>
   );
 
